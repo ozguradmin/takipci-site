@@ -1,8 +1,8 @@
-import { createClient } from '@/lib/turso/client'
+import { tursoClient } from '@/lib/turso/client'
 
 export async function GET() {
   try {
-    const client = createClient()
+    const client = tursoClient
     
     // Test database connection
     const result = await client.execute('SELECT 1 as test')
