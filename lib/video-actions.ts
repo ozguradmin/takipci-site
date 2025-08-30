@@ -19,17 +19,19 @@ export interface VideoRankingData {
 }
 
 export async function invalidateAllCaches() {
-  "use server"
+  // "use server" // Disabled for static export
+  
+  // revalidateTag("videos")
+  // revalidateTag("rankings")
+  // revalidateTag("latest")
+  // revalidateTag("video-data")
 
-  revalidateTag("videos")
-  revalidateTag("rankings")
-  revalidateTag("latest")
-  revalidateTag("video-data")
-
-  revalidatePath("/")
-  revalidatePath("/siralama")
-  revalidatePath("/admin")
-  revalidatePath("/admin/rankings")
+  // revalidatePath("/")
+  // revalidatePath("/siralama")
+  // revalidatePath("/admin")
+  // revalidatePath("/admin/rankings")
+  
+  console.log("Cache invalidation disabled for static export")
 }
 
 function getProfilePictureUrl(username: string, existingUrl?: string | null): string {

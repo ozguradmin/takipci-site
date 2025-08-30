@@ -11,19 +11,21 @@ interface UploadRankingData {
 }
 
 async function invalidateAllCaches() {
-  "use server"
+  // "use server" // Disabled for static export
 
   // Invalidate all cache tags instantly
-  revalidateTag("videos")
-  revalidateTag("rankings")
-  revalidateTag("latest")
-  revalidateTag("video-data")
+  // revalidateTag("videos")
+  // revalidateTag("rankings")
+  // revalidateTag("latest")
+  // revalidateTag("video-data")
 
   // Also revalidate paths for immediate effect
-  revalidatePath("/")
-  revalidatePath("/siralama")
-  revalidatePath("/admin")
-  revalidatePath("/admin/rankings")
+  // revalidatePath("/")
+  // revalidatePath("/siralama")
+  // revalidatePath("/admin")
+  // revalidatePath("/admin/rankings")
+  
+  console.log("Cache invalidation disabled for static export")
 }
 
 export async function processJSONUpload(prevState: any, formData: FormData) {
