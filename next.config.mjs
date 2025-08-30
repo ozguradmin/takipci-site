@@ -68,7 +68,8 @@ const nextConfig = {
       },
     ]
   },
-  output: 'standalone',
+  output: 'export',
+  trailingSlash: true,
   poweredByHeader: false,
   reactStrictMode: true,
 }
