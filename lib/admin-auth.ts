@@ -1,4 +1,4 @@
-"use server"
+// "use server" // Disabled for static export
 
 import { validateAdminCredentials, getAdminUsername } from "@/lib/admin-config"
 import { cookies } from "next/headers"

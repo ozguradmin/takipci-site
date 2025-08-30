@@ -1,4 +1,4 @@
-"use server"
+// "use server" // Disabled for static export
 
 import { executeQuery, executeTransaction } from "@/lib/turso/server"
 import { revalidatePath, revalidateTag } from "next/cache"
