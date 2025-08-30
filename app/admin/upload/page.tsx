@@ -13,17 +13,17 @@ export default function AdminUploadPage() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const adminLoggedIn = localStorage.getItem("adminLoggedIn")
-    console.log("[v0] Checking admin auth in upload:", adminLoggedIn)
+    const adminSession = localStorage.getItem("admin-session")
+    console.log("[v0] Checking admin auth in upload:", adminSession)
 
-    if (adminLoggedIn === "true") {
+    if (adminSession === "true") {
       setIsAuthenticated(true)
     } else {
       console.log("[v0] Not authenticated, redirecting to login")
       router.push("/admin/login")
     }
     setLoading(false)
-  }, [router])
+  }, [])
 
   if (loading) {
     return (

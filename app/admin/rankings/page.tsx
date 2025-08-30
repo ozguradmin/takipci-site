@@ -16,10 +16,10 @@ export default function AdminDataPage() {
   const [videos, setVideos] = useState([])
 
   useEffect(() => {
-    const adminLoggedIn = localStorage.getItem("adminLoggedIn")
-    console.log("[v0] Checking admin auth in rankings:", adminLoggedIn)
+    const adminSession = localStorage.getItem("admin-session")
+    console.log("[v0] Checking admin auth in rankings:", adminSession)
 
-    if (adminLoggedIn === "true") {
+    if (adminSession === "true") {
       setIsAuthenticated(true)
       // Load videos after auth check
       getVideos().then(setVideos).catch(console.error)
@@ -28,7 +28,7 @@ export default function AdminDataPage() {
       router.push("/admin/login")
     }
     setLoading(false)
-  }, [router])
+  }, [])
 
   if (loading) {
     return (
