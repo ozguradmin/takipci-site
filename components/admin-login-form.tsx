@@ -19,7 +19,8 @@ export default function AdminLoginForm() {
       const password = formData.get("password") as string
       
       if (username === "admin" && password === "admin123") {
-        // Success - redirect or set session
+        // Success - set session and redirect
+        localStorage.setItem("admin-session", "true")
         window.location.href = "/admin"
       } else {
         setState({ error: "Geçersiz kullanıcı adı veya şifre" })
