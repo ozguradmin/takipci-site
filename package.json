@@ -6,7 +6,10 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "pages:build": "next build && wrangler pages build",
+    "pages:deploy": "wrangler pages deploy out",
+    "workers:deploy": "wrangler deploy"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",

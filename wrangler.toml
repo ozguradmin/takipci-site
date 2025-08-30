@@ -1,0 +1,18 @@
+name = "takipci-site"
+compatibility_date = "2024-08-30"
+
+[env.production]
+name = "takipci-site"
+
+[[kv_namespaces]]
+binding = "TAKIPCI_KV"
+id = "your-kv-namespace-id"
+preview_id = "your-preview-kv-namespace-id"
+
+[build]
+command = "npm run build"
+cwd = "."
+
+[build.upload]
+format = "modules"
+main = "functions/_worker.js"
