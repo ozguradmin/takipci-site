@@ -1,4 +1,4 @@
-const { createClient } = require('@libsql/client');
+const { createClient } = require('@libsql/client/web');
 
 exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') {
@@ -6,6 +6,11 @@ exports.handler = async (event, context) => {
   }
 
   try {
+    console.log('Environment variables:', {
+      url: process.env.TURSO_DATABASE_URL ? 'SET' : 'NOT SET',
+      token: process.env.TURSO_AUTH_TOKEN ? 'SET' : 'NOT SET'
+    });
+
     const client = createClient({
       url: process.env.TURSO_DATABASE_URL,
       authToken: process.env.TURSO_AUTH_TOKEN,

@@ -1,4 +1,4 @@
-const { createClient } = require('@libsql/client');
+const { createClient } = require('@libsql/client/web');
 
 exports.handler = async (event, context) => {
   if (event.httpMethod !== 'POST') {
