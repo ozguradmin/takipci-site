@@ -1,4 +1,4 @@
-// Cloudflare Worker for search API with cache optimization
+// Cloudflare Worker for rankings API with cache optimization
 export async function onRequest(context) {
   const { request, env } = context;
   
@@ -7,16 +7,6 @@ export async function onRequest(context) {
   }
 
   try {
-    const url = new URL(request.url);
-    const username = url.searchParams.get('username');
-    
-    if (!username) {
-      return new Response(JSON.stringify({ error: 'Username required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
-    }
-    
     // Check cache first
     const cache = caches.default;
     const cacheKey = new Request(request.url, request);
@@ -26,25 +16,26 @@ export async function onRequest(context) {
       return response;
     }
     
-    // Search in KV
+    // Get all rankings from KV
     const keys = await env.TAKIPCI_KV.list({ prefix: 'ranking_' });
-    const results = [];
+    const rankings = [];
     
     for (const key of keys.keys) {
       const data = await env.TAKIPCI_KV.get(key.name);
       if (data) {
         const parsed = JSON.parse(data);
-        if (parsed.username && parsed.username.toLowerCase().includes(username.toLowerCase())) {
-          results.push(parsed);
-        }
+        rankings.push(parsed);
       }
     }
     
+    // Sort by rank
+    rankings.sort((a, b) => (a.rank || 0) - (b.rank || 0));
+    
     // Create response with cache headers
-    response = new Response(JSON.stringify({ results }), {
+    response = new Response(JSON.stringify({ rankings }), {
       headers: { 
         'Content-Type': 'application/json',
-        'Cache-Control': 'public, max-age=300' // 5 minutes cache
+        'Cache-Control': 'public, max-age=600' // 10 minutes cache
       }
     });
     
