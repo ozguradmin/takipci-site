@@ -14,21 +14,21 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     // Check if user is logged in
-    const adminLoggedIn = localStorage.getItem("adminLoggedIn")
-    console.log("[v0] Checking admin auth status:", adminLoggedIn)
+    const adminSession = localStorage.getItem("admin-session")
+    console.log("[v0] Checking admin auth status:", adminSession)
 
-    if (adminLoggedIn === "true") {
+    if (adminSession === "true") {
       setIsAuthenticated(true)
     } else {
       console.log("[v0] Not authenticated, redirecting to login")
       router.push("/admin/login")
     }
     setLoading(false)
-  }, [router])
+  }, [])
 
   const handleLogout = () => {
     console.log("[v0] Admin logout")
-    localStorage.removeItem("adminLoggedIn")
+    localStorage.removeItem("admin-session")
     router.push("/admin/login")
   }
 
