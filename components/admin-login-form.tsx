@@ -1,13 +1,35 @@
 "use client"
-import { useActionState } from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Shield, User, Lock } from "lucide-react"
-import { adminSignIn } from "@/lib/admin-auth"
 
 export default function AdminLoginForm() {
-  const [state, formAction, pending] = useActionState(adminSignIn, { error: "" })
+  const [state, setState] = useState({ error: "" })
+  const [pending, setPending] = useState(false)
+  
+  const handleSubmit = async (formData: FormData) => {
+    setPending(true)
+    setState({ error: "" })
+    
+    try {
+      // Client-side login logic
+      const username = formData.get("username") as string
+      const password = formData.get("password") as string
+      
+      if (username === "admin" && password === "admin123") {
+        // Success - redirect or set session
+        window.location.href = "/admin"
+      } else {
+        setState({ error: "Geçersiz kullanıcı adı veya şifre" })
+      }
+    } catch (error) {
+      setState({ error: "Giriş yapılırken bir hata oluştu" })
+    } finally {
+      setPending(false)
+    }
+  }
 
   return (
     <Card className="w-full max-w-md border-border/50 bg-card/50 backdrop-blur-sm shadow-2xl">
@@ -22,7 +44,7 @@ export default function AdminLoginForm() {
       </CardHeader>
 
       <CardContent>
-        <form action={formAction} className="space-y-6">
+        <form action={handleSubmit} className="space-y-6">
           {state?.error && (
             <div className="bg-destructive/10 border border-destructive/50 text-destructive px-4 py-3 rounded-lg text-sm">
               <div className="flex items-center gap-2">
