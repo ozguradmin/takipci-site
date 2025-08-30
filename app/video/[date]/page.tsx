@@ -7,9 +7,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
-export async function generateStaticParams() {
-  return []
-}
+// generateStaticParams removed for client component
 
 interface VideoRanking {
   id: number
