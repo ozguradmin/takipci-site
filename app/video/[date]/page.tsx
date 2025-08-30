@@ -7,6 +7,10 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
+export async function generateStaticParams() {
+  return []
+}
+
 interface VideoRanking {
   id: number
   username: string
