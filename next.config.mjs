@@ -9,6 +9,7 @@ const nextConfig = {
   experimental: {
     memoryBasedWorkersCount: true,
     optimizePackageImports: ['lucide-react'],
+    bundlePagesRouterDependencies: true,
   },
   serverExternalPackages: ['@libsql/client'],
   transpilePackages: [],
@@ -68,8 +69,8 @@ const nextConfig = {
       },
     ]
   },
-  // output: 'export', // Removed for Cloudflare Pages
-  // trailingSlash: true, // Removed for Cloudflare Pages
+  output: 'export',
+  trailingSlash: true,
   poweredByHeader: false,
   reactStrictMode: true,
 }

@@ -1,4 +1,4 @@
-"use server"
+// "use server" // Disabled for static export
 
 import { executeQuery, executeTransaction } from "@/lib/turso/server"
 import { revalidatePath, revalidateTag } from "next/cache"
@@ -19,7 +19,7 @@ export interface VideoRankingData {
 }
 
 export async function invalidateAllCaches() {
-  "use server"
+  // "use server" // Disabled for static export
   
   revalidateTag("videos")
   revalidateTag("rankings")
