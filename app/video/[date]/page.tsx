@@ -7,15 +7,7 @@ import { Trophy, Calendar, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 
-export async function generateStaticParams() {
-  return [
-    { date: '30-08-2025' },
-    { date: '29-08-2025' },
-    { date: '28-08-2025' },
-    { date: '27-08-2025' },
-    { date: '26-08-2025' }
-  ]
-}
+// generateStaticParams removed for client component
 
 interface VideoRanking {
   id: number
