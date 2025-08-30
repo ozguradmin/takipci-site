@@ -1,4 +1,4 @@
-// "use server" // Disabled for static export
+"use server"
 
 import { executeQuery, executeTransaction } from "@/lib/turso/server"
 import { revalidatePath, revalidateTag } from "next/cache"
@@ -11,7 +11,7 @@ interface UploadRankingData {
 }
 
 async function invalidateAllCaches() {
-  // "use server" // Disabled for static export
+  "use server"
 
   // Invalidate all cache tags instantly
   // revalidateTag("videos")

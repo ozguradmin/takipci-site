@@ -1,4 +1,4 @@
-// "use server" // Disabled for static export
+"use server"
 
 import { executeQuery, executeTransaction } from "@/lib/turso/server"
 import { revalidatePath, revalidateTag } from "next/cache"
@@ -19,19 +19,17 @@ export interface VideoRankingData {
 }
 
 export async function invalidateAllCaches() {
-  // "use server" // Disabled for static export
+  "use server"
   
-  // revalidateTag("videos")
-  // revalidateTag("rankings")
-  // revalidateTag("latest")
-  // revalidateTag("video-data")
+  revalidateTag("videos")
+  revalidateTag("rankings")
+  revalidateTag("latest")
+  revalidateTag("video-data")
 
-  // revalidatePath("/")
-  // revalidatePath("/siralama")
-  // revalidatePath("/admin")
-  // revalidatePath("/admin/rankings")
-  
-  console.log("Cache invalidation disabled for static export")
+  revalidatePath("/")
+  revalidatePath("/siralama")
+  revalidatePath("/admin")
+  revalidatePath("/admin/rankings")
 }
 
 function getProfilePictureUrl(username: string, existingUrl?: string | null): string {

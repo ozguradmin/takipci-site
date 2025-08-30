@@ -68,8 +68,8 @@ const nextConfig = {
       },
     ]
   },
-  output: 'export',
-  trailingSlash: true,
+  // output: 'export', // Removed for Cloudflare Pages
+  // trailingSlash: true, // Removed for Cloudflare Pages
   poweredByHeader: false,
   reactStrictMode: true,
 }

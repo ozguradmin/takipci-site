@@ -1,18 +1,13 @@
 name = "takipci-site"
-compatibility_date = "2024-08-30"
+compatibility_date = "2024-01-01"
 
 [env.production]
-name = "takipci-site"
+vars = { NODE_ENV = "production" }
 
-[[kv_namespaces]]
-binding = "TAKIPCI_KV"
+[[env.production.kv_namespaces]]
+binding = "TAKIPCI_DATA"
 id = "your-kv-namespace-id"
-preview_id = "your-preview-kv-namespace-id"
+preview_id = "your-kv-preview-id"
 
-[build]
-command = "npm run build"
-cwd = "."
-
-[build.upload]
-format = "modules"
-main = "functions/_worker.js"
+# Cloudflare Pages configuration
+pages_build_output_dir = ".next"

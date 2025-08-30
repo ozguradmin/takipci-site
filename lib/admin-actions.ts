@@ -1,4 +1,4 @@
-// "use server" // Disabled for static export
+"use server"
 
 import { executeQuery } from "@/lib/turso/server"
 import { requireAdminAuth } from "@/lib/admin-auth"
