@@ -1,11 +1,7 @@
-"use client"
-
-import { useEffect, useState } from "react"
 import { RankingSearch } from "@/components/ranking-search"
 import { Trophy, Calendar, ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 
 export async function generateStaticParams() {
   return [
@@ -31,60 +27,29 @@ interface Video {
   thumbnail_url: string | null
 }
 
-export default function VideoRankingPage() {
-  const params = useParams()
-  const [rankings, setRankings] = useState<VideoRanking[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  const date = params.date as string
+export default async function VideoRankingPage({
+  params,
+}: {
+  params: { date: string }
+}) {
+  const date = params.date
   const [day, month, year] = date.split("-")
   const formattedDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
   const displayDate = date.replace(/-/g, ".")
 
-  useEffect(() => {
-    async function fetchRankings() {
-      try {
-        const response = await fetch(`/api/rankings?date=${date}`)
-        const data = await response.json()
-        
-        if (data.success && data.data.length > 0) {
-          setRankings(data.data[0].rankings)
-        } else {
-          setError("Bu tarih için veri bulunamadı")
-        }
-      } catch (err) {
-        setError("Veri yükleme hatası")
-      } finally {
-        setLoading(false)
-      }
+  // Fetch rankings data
+  let rankings: VideoRanking[] = []
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL || 'https://takipcisite.netlify.app'}/api/rankings?date=${date}`, {
+      cache: 'no-store'
+    })
+    const data = await response.json()
+    
+    if (data.success && data.data.length > 0) {
+      rankings = data.data[0].rankings
     }
-
-    fetchRankings()
-  }, [date])
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Veriler yükleniyor...</p>
-        </div>
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-destructive mb-4">{error}</p>
-          <Link href="/">
-            <Button>Ana Sayfaya Dön</Button>
-          </Link>
-        </div>
-      </div>
-    )
+  } catch (error) {
+    console.error('Error fetching rankings:', error)
   }
 
   return (
