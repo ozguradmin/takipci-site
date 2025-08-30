@@ -18,7 +18,7 @@ export default function AdminLoginForm() {
       const username = formData.get("username") as string
       const password = formData.get("password") as string
       
-      if (username === "admin" && password === "admin123") {
+      if (username === "ozguradmin" && password === "o86741711") {
         // Success - set session and redirect
         localStorage.setItem("admin-session", "true")
         window.location.href = "/admin"

@@ -20,6 +20,16 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Validate rankings format
+    for (const ranking of data.rankings) {
+      if (!ranking.username || !ranking.rank) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ error: 'Her ranking objesi username ve rank içermelidir' })
+        };
+      }
+    }
+
     // Veriyi veritabanına kaydet
     await client.execute({
       sql: `INSERT OR REPLACE INTO video_rankings (date, rankings_data) VALUES (?, ?)`,
