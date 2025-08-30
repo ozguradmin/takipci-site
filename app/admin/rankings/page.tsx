@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
-import { getVideos } from "@/lib/video-actions"
+// import { getVideos } from "@/lib/video-actions"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Database, Shield, ArrowLeft } from "lucide-react"
@@ -21,8 +21,15 @@ export default function AdminDataPage() {
 
     if (adminSession === "true") {
       setIsAuthenticated(true)
-      // Load videos after auth check
-      getVideos().then(setVideos).catch(console.error)
+      // Load videos via Netlify Function
+      fetch('/.netlify/functions/rankings')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            setVideos(data.data || [])
+          }
+        })
+        .catch(console.error)
     } else {
       console.log("[v0] Not authenticated, redirecting to login")
       router.push("/admin/login")

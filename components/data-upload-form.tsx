@@ -91,7 +91,7 @@ export default function DataUploadForm() {
       formData.set("videoDescription", videoMetadata.description)
       formData.set("videoThumbnail", videoMetadata.thumbnail_url)
 
-      const response = await fetch("/api/upload", {
+      const response = await fetch("/.netlify/functions/upload", {
         method: "POST",
         body: formData,
         signal: abortControllerRef.current.signal,
