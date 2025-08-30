@@ -10,18 +10,13 @@ export default function AdminLoginPage() {
 
   useEffect(() => {
     // Check if admin is already logged in (client-side)
-    const checkSession = () => {
-      // Simple session check - you can implement proper session management later
-      const isLoggedIn = localStorage.getItem("admin-session") === "true"
-      if (isLoggedIn) {
-        router.push("/admin")
-      } else {
-        setIsLoading(false)
-      }
+    const isLoggedIn = localStorage.getItem("admin-session") === "true"
+    if (isLoggedIn) {
+      router.push("/admin")
+    } else {
+      setIsLoading(false)
     }
-
-    checkSession()
-  }, [router])
+  }, [])
 
   if (isLoading) {
     return (
