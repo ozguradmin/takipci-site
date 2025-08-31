@@ -2,6 +2,11 @@ import { Instagram, Play, Trophy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
+import AdSenseAd from "@/components/adsense-ad"
+import HamburgerMenu from "@/components/hamburger-menu"
+import FallbackImage from "@/components/fallback-image"
+import { getStaticData, getAvailableVideoDates } from "@/lib/static-data"
+
 // Simple helper functions
 function formatDateForUrl(date: string): string {
   const [year, month, day] = date.split('-');
@@ -12,9 +17,6 @@ function formatDateForDisplay(date: string): string {
   const [year, month, day] = date.split('-');
   return `${day}.${month}.${year}`;
 }
-import AdSenseAd from "@/components/adsense-ad"
-import HamburgerMenu from "@/components/hamburger-menu"
-import FallbackImage from "@/components/fallback-image"
 
 export const revalidate = 120 // Revalidate every 2 minutes instead of 5
 
@@ -30,19 +32,21 @@ export const metadata = {
 }
 
 export default async function HomePage() {
-  // Test data
-  const videos = [
-    {
-      video_date: "2025-08-31",
-      title: null,
-      description: null,
-      thumbnail_url: null
-    }
-  ]
+  // Get static data
+  const staticData = getStaticData()
+  const availableDates = getAvailableVideoDates()
   
-  const latestRankings = [
-    { id: 1, username: "test", profile_picture_url: null, rank: 1 }
-  ]
+  // Get latest video data
+  const latestDate = availableDates[0] // Most recent date
+  const latestRankings = staticData?.rankings?.slice(0, 5) || []
+  
+  // Create videos array from available dates
+  const videos = availableDates.map(date => ({
+    video_date: date,
+    title: null,
+    description: null,
+    thumbnail_url: null
+  }))
 
   return (
     <div className="min-h-screen bg-background">
