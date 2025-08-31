@@ -75,7 +75,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-background text-foreground dark:bg-background dark:text-foreground">
       {/* Header */}
-      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-[55px] z-40 shadow-sm dark:bg-background/80 dark:border-border/50">
+      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-[50px] md:top-[55px] z-40 shadow-sm dark:bg-background/80 dark:border-border/50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
