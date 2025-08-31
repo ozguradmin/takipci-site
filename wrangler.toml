@@ -2,12 +2,8 @@ name = "takipci-site"
 compatibility_date = "2024-01-01"
 
 [env.production]
-vars = { NODE_ENV = "production" }
+name = "takipci-site"
 
-[[env.production.kv_namespaces]]
-binding = "TAKIPCI_DATA"
-id = "your-kv-namespace-id"
-preview_id = "your-kv-preview-id"
-
-# Cloudflare Pages configuration
-pages_build_output_dir = ".next"
+[[env.production.routes]]
+pattern = "takipci-site.pages.dev/*"
+zone_name = "pages.dev"

@@ -10,6 +10,9 @@
     "generate-data": "node scripts/generate-static-data.js",
     "daily-upload": "node scripts/daily-upload.js",
     "deploy": "node scripts/deploy.js",
+    "deploy:netlify": "node scripts/netlify-deploy.js",
+    "deploy:vercel": "node scripts/vercel-deploy.js",
+    "deploy:cloudflare": "node scripts/cloudflare-deploy.js",
     "pages:build": "next build && wrangler pages build",
     "pages:deploy": "wrangler pages deploy out",
     "workers:deploy": "wrangler deploy"
