@@ -2,7 +2,7 @@ import { Instagram, Play, Trophy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import AdSenseAd from "@/components/adsense-ad"
+
 import HamburgerMenu from "@/components/hamburger-menu"
 import FallbackImage from "@/components/fallback-image"
 import { getStaticData, getAvailableVideoDates } from "@/lib/static-data"
@@ -79,8 +79,10 @@ export default async function HomePage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <HamburgerMenu />
-              <Trophy className="h-8 w-8 text-primary" />
-              <h1 className="text-xl md:text-2xl font-bold text-foreground">takipcileridovusturuyorum</h1>
+              <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <Trophy className="h-8 w-8 text-primary" />
+                <h1 className="text-xl md:text-2xl font-bold text-foreground">takipcileridovusturuyorum</h1>
+              </Link>
             </div>
             <Link
               href="https://www.instagram.com/takipcileridovusturuyorum"
@@ -111,14 +113,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div className="mb-8 flex justify-center">
-            <AdSenseAd
-              adSlot="1234567890"
-              adFormat="horizontal"
-              className="max-w-4xl w-full"
-              style={{ display: "block", textAlign: "center", minHeight: "90px" }}
-            />
-          </div>
+
 
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
                         {/* Latest Videos */}
@@ -230,28 +225,14 @@ export default async function HomePage() {
             </Card>
           </div>
 
-          <div className="mt-12 mb-8 flex justify-center">
-            <AdSenseAd
-              adSlot="0987654321"
-              adFormat="rectangle"
-              className="max-w-md w-full"
-              style={{ display: "block", textAlign: "center", minHeight: "250px" }}
-            />
-          </div>
+
         </div>
       </section>
 
       {/* Footer */}
       <footer className="border-t border-border/50 bg-background/50 backdrop-blur-sm py-8 mt-16 dark:bg-background/50 dark:border-border/50">
         <div className="container mx-auto px-4 text-center">
-          <div className="mb-6 flex justify-center">
-            <AdSenseAd
-              adSlot="1122334455"
-              adFormat="horizontal"
-              className="max-w-2xl w-full"
-              style={{ display: "block", textAlign: "center", minHeight: "90px" }}
-            />
-          </div>
+
 
           <div className="flex items-center justify-center gap-2 mb-4">
             <Trophy className="h-6 w-6 text-primary" />

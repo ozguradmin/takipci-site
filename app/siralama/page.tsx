@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import RankingSearch from "@/components/ranking-search"
-import { getAvailableVideoDates } from "@/lib/static-data"
+import { getAvailableVideoDates, getStaticDataForDate } from "@/lib/static-data"
 import HamburgerMenu from "@/components/hamburger-menu"
 
 interface RankingUser {
@@ -25,11 +25,9 @@ export default async function SiralamaPage() {
   
   if (availableDates.length > 0) {
     latestDate = availableDates[0] // Most recent date
-    try {
-      const latestVideoData = require(`../public/data/rankings-${latestDate}.json`)
+    const latestVideoData = getStaticDataForDate(latestDate)
+    if (latestVideoData) {
       rankingData = latestVideoData.rankings || []
-    } catch (error) {
-      console.error('Latest video data not found:', error)
     }
   }
 

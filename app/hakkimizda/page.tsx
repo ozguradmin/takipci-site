@@ -18,8 +18,10 @@ export default function AboutPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <HamburgerMenu />
-              <Trophy className="h-8 w-8 text-primary" />
-              <h1 className="text-xl md:text-2xl font-bold text-foreground">takipcileridovusturuyorum</h1>
+              <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <Trophy className="h-8 w-8 text-primary" />
+                <h1 className="text-xl md:text-2xl font-bold text-foreground">takipcileridovusturuyorum</h1>
+              </Link>
             </div>
             <Link
               href="https://www.instagram.com/takipcileridovusturuyorum"
