@@ -21,33 +21,31 @@ interface RankingSearchProps {
   videoDate: string
 }
 
-async function searchUserInDatabase(username: string, videoDate: string) {
+async function searchUserInStaticData(username: string, videoDate: string) {
   try {
-    console.log("[v0] Starting search with:", { searchTerm: username })
-    console.log("[v0] VideoDate parameter:", { videoDate, type: typeof videoDate, length: videoDate?.length })
-    console.log("[v0] Client sending search request:", { username, videoDate })
-
-    const response = await fetch("/api/search-user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, videoDate }),
-    })
-
-    console.log("[v0] Search API response status:", response.status)
-
+    console.log("[v0] Starting static search with:", { searchTerm: username, videoDate })
+    
+    // Static JSON dosyasından arama yap
+    const response = await fetch(`/data/rankings-${videoDate}.json`)
+    
     if (!response.ok) {
-      const errorText = await response.text()
-      console.error("[v0] Search API error response:", errorText)
-      throw new Error("Search failed")
+      console.log("[v0] Static file not found, falling back to local search")
+      return { users: [] }
     }
-
-    const result = await response.json()
-    console.log("[v0] Search API success result:", { userCount: result.users?.length || 0 })
-    return result
+    
+    const data = await response.json()
+    const rankings = data.rankings || []
+    
+    // Kullanıcı adına göre filtrele
+    const filteredUsers = rankings.filter((user: any) => 
+      user.username.toLowerCase().includes(username.toLowerCase())
+    )
+    
+    console.log("[v0] Static search result:", { userCount: filteredUsers.length })
+    return { users: filteredUsers }
+    
   } catch (error) {
-    console.error("Search error:", error)
+    console.error("Static search error:", error)
     return { users: [] }
   }
 }
@@ -60,11 +58,11 @@ function RankingSearch({ rankings, videoDate }: RankingSearchProps) {
   const itemsPerPage = 100
 
   useEffect(() => {
-    const searchInDatabase = async () => {
+    const searchInStaticData = async () => {
       if (searchTerm.trim().length > 0) {
-        console.log("[v0] Starting search with:", { searchTerm: searchTerm.trim(), videoDate })
+        console.log("[v0] Starting static search with:", { searchTerm: searchTerm.trim(), videoDate })
         setIsSearching(true)
-        const result = await searchUserInDatabase(searchTerm.trim(), videoDate)
+        const result = await searchUserInStaticData(searchTerm.trim(), videoDate)
         setSearchResults(result.users || [])
         setIsSearching(false)
       } else {
@@ -72,14 +70,14 @@ function RankingSearch({ rankings, videoDate }: RankingSearchProps) {
       }
     }
 
-    const timeoutId = setTimeout(searchInDatabase, 300) // Debounce search
+    const timeoutId = setTimeout(searchInStaticData, 300) // Debounce search
     return () => clearTimeout(timeoutId)
   }, [searchTerm, videoDate])
 
   const filteredRankings = useMemo(() => {
     if (!searchTerm.trim()) return rankings
 
-    // Use database search results if available
+    // Use static search results if available
     if (searchResults.length > 0) {
       return searchResults
     }
