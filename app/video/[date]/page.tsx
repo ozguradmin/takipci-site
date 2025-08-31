@@ -55,13 +55,13 @@ export default async function VideoRankingPage({ params }: VideoRankingPageProps
   const { video, rankings } = staticData
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Link href="/">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="hover:bg-muted/50 transition-colors duration-200">
                 <ArrowLeft className="h-4 w-4 mr-2" />
                 Ana Sayfa
               </Button>

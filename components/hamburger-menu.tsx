@@ -12,7 +12,6 @@ export default function HamburgerMenu() {
   const menuItems = [
     { href: "/", label: "Ana Sayfa", icon: Home },
     { href: "/siralama", label: "Son videodaki sıralamanı gör", icon: Trophy },
-    { href: "/admin", label: "Admin Panel", icon: Settings },
     { href: "/hakkimizda", label: "Hakkımızda", icon: Info },
     { href: "/iletisim", label: "İletişim", icon: Mail },
     { href: "/nasil-calisir", label: "Nasıl Çalışır", icon: HelpCircle },

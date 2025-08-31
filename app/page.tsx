@@ -32,13 +32,22 @@ export const metadata = {
 }
 
 export default async function HomePage() {
-  // Get static data
-  const staticData = getStaticData()
+  // Get available video dates
   const availableDates = getAvailableVideoDates()
   
-  // Get latest video data
-  const latestDate = availableDates[0] // Most recent date
-  const latestRankings = staticData?.rankings?.slice(0, 5) || []
+  // Get latest video data directly from the most recent file
+  let latestRankings = []
+  let latestDate = null
+  
+  if (availableDates.length > 0) {
+    latestDate = availableDates[0] // Most recent date
+    try {
+      const latestVideoData = require(`../public/data/rankings-${latestDate}.json`)
+      latestRankings = latestVideoData.rankings?.slice(0, 5) || []
+    } catch (error) {
+      console.error('Latest video data not found:', error)
+    }
+  }
   
   // Create videos array from available dates with actual data
   const videos = availableDates.map(date => {
@@ -63,9 +72,9 @@ export default async function HomePage() {
   })
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -77,7 +86,7 @@ export default async function HomePage() {
               href="https://www.instagram.com/takipcileridovusturuyorum"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors duration-200"
             >
               <Instagram className="h-5 w-5" />
               <span className="hidden sm:inline">Instagram</span>
@@ -111,15 +120,15 @@ export default async function HomePage() {
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            {/* Latest Videos */}
-            <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-foreground">
-                  <Play className="h-5 w-5 text-primary" />
-                  Son Videolar
-                </CardTitle>
-              </CardHeader>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                        {/* Latest Videos */}
+                        <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300">
+                          <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-foreground">
+                              <Play className="h-5 w-5 text-primary" />
+                              Son Videolar
+                            </CardTitle>
+                          </CardHeader>
               <CardContent className="space-y-4">
                 {videos.slice(0, 2).map((video, index) => {
                   const dateUrl = formatDateForUrl(video.video_date)
@@ -172,14 +181,14 @@ export default async function HomePage() {
               </CardContent>
             </Card>
 
-            {/* Top Rankings Preview */}
-            <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-foreground">
-                  <Trophy className="h-5 w-5 text-primary" />
-                  Son videodaki İlk 5 Sıralama
-                </CardTitle>
-              </CardHeader>
+                                    {/* Top Rankings Preview */}
+                        <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300">
+                          <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-foreground">
+                              <Trophy className="h-5 w-5 text-primary" />
+                              Son videodaki İlk 5 Sıralama
+                            </CardTitle>
+                          </CardHeader>
               <CardContent className="space-y-3">
                 {latestRankings.slice(0, 5).map((user) => (
                   <div
@@ -233,7 +242,7 @@ export default async function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border bg-card/30 py-8">
+      <footer className="border-t border-border/50 bg-background/50 backdrop-blur-sm py-8 mt-16">
         <div className="container mx-auto px-4 text-center">
           <div className="mb-6 flex justify-center">
             <AdSenseAd
