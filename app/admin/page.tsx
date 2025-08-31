@@ -30,10 +30,16 @@ export default function AdminPage() {
   const loadExistingData = async () => {
     try {
       const response = await fetch('/data/rankings.json')
-      const data = await response.json()
-      setExistingData(data.rankings || [])
+      if (response.ok) {
+        const data = await response.json()
+        setExistingData(data.rankings || [])
+      } else {
+        console.log('Rankings.json bulunamadı, boş veri gösteriliyor')
+        setExistingData([])
+      }
     } catch (error) {
       console.error('Veri yükleme hatası:', error)
+      setExistingData([])
     }
   }
 
@@ -46,22 +52,27 @@ export default function AdminPage() {
       for (const date of dates) {
         try {
           const response = await fetch(`/data/rankings-${date}.json`)
-          const data = await response.json()
-          videos.push({
-            date: date,
-            title: data.title || `${date} tarihli video`,
-            description: data.description || 'Video açıklaması',
-            thumbnail: data.thumbnail_url || '/default-thumbnail.png',
-            count: data.rankings?.length || 0
-          })
+          if (response.ok) {
+            const data = await response.json()
+            videos.push({
+              date: date,
+              title: data.title || `${date} tarihli video`,
+              description: data.description || 'Video açıklaması',
+              thumbnail: data.thumbnail_url || '/default-thumbnail.png',
+              count: data.rankings?.length || 0
+            })
+          } else {
+            console.log(`Video ${date} bulunamadı`)
+          }
         } catch (error) {
-          console.log(`Video ${date} bulunamadı`)
+          console.log(`Video ${date} yüklenemedi:`, error)
         }
       }
       
       setExistingVideos(videos)
     } catch (error) {
       console.error('Video yükleme hatası:', error)
+      setExistingVideos([])
     }
   }
 
@@ -108,17 +119,29 @@ export default function AdminPage() {
         generated_at: new Date().toISOString()
       }
 
-      // Local storage'a kaydet (geçici)
-      localStorage.setItem(`temp-data-${videoDate}`, JSON.stringify(data))
+      // Direkt API'ye gönder (localStorage yerine)
+      const response = await fetch('/api/save-data', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
       
-      toast.success(`${rankingsArray.length} kayıt hazırlandı!`)
-      
-      // Formu temizle
-      setVideoDate("")
-      setVideoTitle("")
-      setVideoDescription("")
-      setVideoThumbnail("")
-      setJsonFile(null)
+      if (response.ok) {
+        toast.success(`${rankingsArray.length} kayıt başarıyla kaydedildi!`)
+        
+        // Formu temizle
+        setVideoDate("")
+        setVideoTitle("")
+        setVideoDescription("")
+        setVideoThumbnail("")
+        setJsonFile(null)
+        
+        // Verileri yeniden yükle
+        loadExistingData()
+        loadExistingVideos()
+      } else {
+        throw new Error('Veri kaydetme hatası')
+      }
       
     } catch (error) {
       toast.error("JSON dosyası okuma hatası!")
@@ -132,51 +155,21 @@ export default function AdminPage() {
     setLoading(true)
     
     try {
-      // Tüm temp verileri al
-      const tempData: any[] = []
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key?.startsWith('temp-data-')) {
-          const data = JSON.parse(localStorage.getItem(key) || '{}')
-          tempData.push(data)
-        }
-      }
-
-      if (tempData.length === 0) {
-        toast.error("Deploy edilecek veri yok!")
-        return
-      }
-
-      // Her veri için JSON dosyası oluştur
-      for (const data of tempData) {
-        const response = await fetch('/api/save-data', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        })
-        
-        if (!response.ok) {
-          throw new Error('Veri kaydetme hatası')
-        }
-      }
-
-      // Temp verileri temizle
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i)
-        if (key?.startsWith('temp-data-')) {
-          localStorage.removeItem(key)
-        }
-      }
-
-      toast.success("Veriler kaydedildi! Site güncelleniyor...")
+      // GitHub'a push yaparak deploy et
+      const response = await fetch('/api/deploy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
       
-      // 3 saniye sonra sayfayı yenile
-      setTimeout(() => {
-        window.location.reload()
-      }, 3000)
+      if (response.ok) {
+        toast.success("Deploy başlatıldı! Site 2-3 dakika içinde güncellenecek...")
+      } else {
+        throw new Error('Deploy hatası')
+      }
 
     } catch (error) {
-      toast.error("Deploy hatası!")
+      toast.error("Deploy hatası! Manuel olarak git push yapın.")
+      console.error(error)
     } finally {
       setLoading(false)
     }
@@ -336,14 +329,14 @@ export default function AdminPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground mb-4">
-                  Hazırlanan verileri siteye yükleyin. Bu işlem 2-3 dakika sürebilir.
+                  Veriler otomatik olarak kaydedildi. Siteyi güncellemek için deploy edin.
                 </p>
                 <Button 
                   onClick={deployData} 
                   disabled={loading}
                   className="w-full bg-green-600 hover:bg-green-700"
                 >
-                  {loading ? "Deploy Ediliyor..." : "Siteye Deploy Et"}
+                  {loading ? "Deploy Ediliyor..." : "Siteyi Güncelle"}
                 </Button>
               </CardContent>
             </Card>
