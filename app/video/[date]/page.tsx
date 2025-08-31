@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { getStaticDataForDate, formatDateForDisplay, getAvailableVideoDates } from "@/lib/static-data"
 import { notFound } from "next/navigation"
+import HamburgerMenu from "@/components/hamburger-menu"
 
 // Generate static params for all available video dates
 export async function generateStaticParams() {
@@ -59,17 +60,24 @@ export default async function VideoRankingPage({ params }: VideoRankingPageProps
       {/* Header */}
       <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm dark:bg-background/80 dark:border-border/50">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center gap-4">
-            <Link href="/">
-              <Button variant="ghost" size="sm" className="hover:bg-muted/50 transition-colors duration-200">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Ana Sayfa
-              </Button>
-            </Link>
-            <div className="flex items-center gap-3">
-              <Trophy className="h-6 w-6 text-primary" />
-              <h1 className="text-lg md:text-xl font-bold text-foreground">{displayDate} Video Sıralaması</h1>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <HamburgerMenu />
+              <Link href="/">
+                <Button variant="ghost" size="sm" className="hover:bg-muted/50 transition-colors duration-200">
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Ana Sayfa
+                </Button>
+              </Link>
+              <div className="flex items-center gap-3">
+                <Trophy className="h-6 w-6 text-primary" />
+                <h1 className="text-lg md:text-xl font-bold text-foreground">{displayDate} Video Sıralaması</h1>
+              </div>
             </div>
+            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <Trophy className="h-6 w-6 text-primary" />
+              <span className="text-sm font-semibold text-foreground hidden sm:inline">takipcileridovusturuyorum</span>
+            </Link>
           </div>
         </div>
       </header>

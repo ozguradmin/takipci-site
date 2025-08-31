@@ -11,9 +11,9 @@ export const metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground dark:bg-background dark:text-foreground">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm dark:bg-background/80 dark:border-border/50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -43,7 +43,7 @@ export default function AboutPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <Card className="border-border/50 bg-card/50">
+            <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-card dark:border-border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Users className="h-5 w-5 text-primary" />
@@ -52,13 +52,13 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Instagram'da 25 bin takipçim var ve onları eğlenceli bir yarışmaya dahil etme fikri aklıma geldi. Her
+                  Instagram'da 35+ bin takipçim var ve onları eğlenceli bir yarışmaya dahil etme fikri aklıma geldi. Her
                   video paylaştığımda takipçilerimi birbirleriyle "dövüştürüyorum" - tabii ki eğlenceli bir şekilde!
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-border/50 bg-card/50">
+            <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-card dark:border-border">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Video className="h-5 w-5 text-primary" />

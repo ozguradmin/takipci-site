@@ -3,7 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import RankingSearch from "@/components/ranking-search"
-import { getStaticData } from "@/lib/static-data"
+import { getAvailableVideoDates } from "@/lib/static-data"
+import HamburgerMenu from "@/components/hamburger-menu"
 
 interface RankingUser {
   id: number
@@ -15,19 +16,36 @@ interface RankingUser {
 }
 
 export default async function SiralamaPage() {
-  const staticData = getStaticData()
-  const rankingData: RankingUser[] = staticData?.rankings || []
+  // Get available video dates
+  const availableDates = getAvailableVideoDates()
+  
+  // Get latest video data directly from the most recent file
+  let rankingData: RankingUser[] = []
+  let latestDate = null
+  
+  if (availableDates.length > 0) {
+    latestDate = availableDates[0] // Most recent date
+    try {
+      const latestVideoData = require(`../public/data/rankings-${latestDate}.json`)
+      rankingData = latestVideoData.rankings || []
+    } catch (error) {
+      console.error('Latest video data not found:', error)
+    }
+  }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground dark:bg-background dark:text-foreground">
       {/* Header */}
-      <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm dark:bg-background/80 dark:border-border/50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-              <Trophy className="h-8 w-8 text-primary" />
-              <h1 className="text-xl md:text-2xl font-bold text-foreground">takipcileridovusturuyorum</h1>
-            </Link>
+            <div className="flex items-center gap-3">
+              <HamburgerMenu />
+              <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <Trophy className="h-8 w-8 text-primary" />
+                <h1 className="text-xl md:text-2xl font-bold text-foreground">takipcileridovusturuyorum</h1>
+              </Link>
+            </div>
             <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
               {rankingData.length} Takipçi
             </Badge>
@@ -121,7 +139,7 @@ export default async function SiralamaPage() {
             </div>
           )}
 
-          <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+          <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-card dark:border-border">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-foreground">
                 <Trophy className="h-6 w-6 text-primary" />

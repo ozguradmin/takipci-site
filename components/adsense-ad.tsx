@@ -39,7 +39,7 @@ export default function AdSenseAd({
   // Development ortamında placeholder göster
   if (isDevelopment) {
     return (
-      <div className={`adsense-placeholder ${className}`} style={{...style, backgroundColor: '#f0f0f0', border: '2px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666', fontSize: '14px'}}>
+      <div className={`adsense-placeholder ${className} bg-muted/20 border-2 border-dashed border-muted-foreground/30 text-muted-foreground text-sm`} style={{...style, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
         AdSense Placeholder
       </div>
     )
