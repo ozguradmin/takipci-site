@@ -75,7 +75,8 @@ export function optimizeImageUrl(url: string, width: number, height: number, qua
   // Cloudflare R2 URL'leri için optimizasyon
   if (url.includes('pub-63c4f2af186d48f184dea3dfce00ba35.r2.dev')) {
     const optimizedQuality = quality || getOptimizedQuality(Math.max(width, height))
-    return `${url}?width=${width}&height=${height}&quality=${optimizedQuality}&format=webp`
+    // R2'de resize parametreleri
+    return `${url}?width=${width}&height=${height}&quality=${optimizedQuality}&format=webp&resize=fill`
   }
   
   return url

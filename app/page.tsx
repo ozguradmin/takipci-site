@@ -6,7 +6,7 @@ import Link from "next/link"
 import HamburgerMenu from "@/components/hamburger-menu"
 import FallbackImage from "@/components/fallback-image"
 import { getStaticData, getAvailableVideoDates } from "@/lib/static-data"
-import { getOptimizedQuality, getOptimizedSizes, getLoadingStrategy, getPriorityStrategy } from "@/lib/image-utils"
+import { getOptimizedQuality, getOptimizedSizes, getLoadingStrategy, getPriorityStrategy, optimizeImageUrl } from "@/lib/image-utils"
 
 // Simple helper functions
 function formatDateForUrl(date: string): string {
@@ -141,7 +141,7 @@ export default async function HomePage() {
                         <div className="w-20 h-14 rounded-md overflow-hidden flex-shrink-0">
                           {video.thumbnail_url ? (
                             <FallbackImage
-                              src={video.thumbnail_url}
+                              src={optimizeImageUrl(video.thumbnail_url, 80, 56)}
                               alt={`${displayDate} video thumbnail`}
                               width={80}
                               height={56}
@@ -196,7 +196,7 @@ export default async function HomePage() {
                     </div>
                     <div className="w-10 h-10 rounded-full overflow-hidden border border-border bg-muted flex-shrink-0">
                       <FallbackImage
-                        src={user.profile_picture_url || "/profile-picture.png"}
+                        src={user.profile_picture_url ? optimizeImageUrl(user.profile_picture_url, 40, 40) : "/profile-picture.png"}
                         alt={user.username}
                         width={40}
                         height={40}

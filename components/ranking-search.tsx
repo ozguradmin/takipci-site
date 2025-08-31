@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Trophy, Medal, Award, Crown } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
-import { getOptimizedQuality, getOptimizedSizes } from "@/lib/image-utils"
+import { getOptimizedQuality, getOptimizedSizes, optimizeImageUrl } from "@/lib/image-utils"
 
 interface RankingUser {
   id: number
@@ -254,7 +254,7 @@ function RankingSearch({ rankings, videoDate }: RankingSearchProps) {
               <Image
                 src={
                   user.username
-                    ? `https://pub-63c4f2af186d48f184dea3dfce00ba35.r2.dev/${user.username}.jpg`
+                    ? optimizeImageUrl(`https://pub-63c4f2af186d48f184dea3dfce00ba35.r2.dev/${user.username}.jpg`, 56, 56)
                     : "/placeholder.svg?height=60&width=60"
                 }
                 alt={user.username}
