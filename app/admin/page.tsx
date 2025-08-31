@@ -122,19 +122,43 @@ export default function AdminPage() {
       // JSON dosyasını public/data klasörüne kaydet
       const jsonString = JSON.stringify(data, null, 2)
       
-      // Dosyayı indir (static export'ta API route çalışmıyor)
-      const blob = new Blob([jsonString], { type: 'application/json' })
-      const url = URL.createObjectURL(blob)
-      
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `rankings-${videoDate}.json`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-      
-      toast.success(`${rankingsArray.length} kayıt hazırlandı! Dosya indirildi.`)
+      // Dosyayı localStorage'a kaydet (geçici çözüm)
+      try {
+        // Dosyayı localStorage'a kaydet
+        localStorage.setItem(`temp-data-${videoDate}`, jsonString)
+        
+        // Otomatik kopyalama için clipboard'a kopyala
+        await navigator.clipboard.writeText(jsonString)
+        
+        toast.success(`${rankingsArray.length} kayıt hazırlandı! JSON verisi panoya kopyalandı.`)
+        
+        // Kullanıcıya talimat ver
+        setTimeout(() => {
+          alert(`VERİ HAZIRLANDI!
+
+1. Ctrl+V ile JSON verisini bir dosyaya yapıştır
+2. Dosyayı "rankings-${videoDate}.json" olarak kaydet
+3. public/data/ klasörüne kopyala
+4. Git push yap
+
+Veya "Deploy" tab'ından talimatları gör.`)
+        }, 1000)
+        
+      } catch (error) {
+        // Fallback: dosyayı indir
+        const blob = new Blob([jsonString], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+        
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `rankings-${videoDate}.json`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        
+        toast.success(`${rankingsArray.length} kayıt hazırlandı! Dosya indirildi.`)
+      }
       
       // Formu temizle
       setVideoDate("")
@@ -339,15 +363,22 @@ DEPLOY TALİMATLARI:
                   </p>
                   
                   <div className="bg-muted/50 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Adım 1: Dosyayı Kopyala</h4>
+                    <h4 className="font-semibold mb-2">Adım 1: JSON Verisini Kaydet</h4>
                     <p className="text-sm text-muted-foreground">
-                      İndirilen <code>rankings-YYYY-MM-DD.json</code> dosyasını 
-                      <code>public/data/</code> klasörüne kopyalayın
+                      "Veriyi Hazırla" butonuna bastıktan sonra JSON verisi panoya kopyalanır.
+                      Ctrl+V ile bir dosyaya yapıştır ve <code>rankings-YYYY-MM-DD.json</code> olarak kaydet.
                     </p>
                   </div>
                   
                   <div className="bg-muted/50 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Adım 2: Git Komutları</h4>
+                    <h4 className="font-semibold mb-2">Adım 2: Dosyayı Kopyala</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Kaydettiğin JSON dosyasını <code>public/data/</code> klasörüne kopyala
+                    </p>
+                  </div>
+                  
+                  <div className="bg-muted/50 p-4 rounded-lg">
+                    <h4 className="font-semibold mb-2">Adım 3: Git Komutları</h4>
                     <div className="bg-black text-green-400 p-3 rounded font-mono text-sm">
                       <div>git add .</div>
                       <div>git commit -m "Veri güncellendi"</div>
@@ -356,7 +387,7 @@ DEPLOY TALİMATLARI:
                   </div>
                   
                   <div className="bg-muted/50 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Adım 3: Otomatik Deploy</h4>
+                    <h4 className="font-semibold mb-2">Adım 4: Otomatik Deploy</h4>
                     <p className="text-sm text-muted-foreground">
                       Netlify otomatik olarak deploy edecek (2-3 dakika)
                     </p>
