@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import "./globals.css"
+import ScrollingBanner from "@/components/scrolling-banner"
 
 export const metadata: Metadata = {
   title: "Takipçilerimi Dövüştürüyorum - Sıralama Sistemi",
@@ -39,6 +40,9 @@ html {
         {/* Cache Control Headers */}
         <meta httpEquiv="Cache-Control" content="public, max-age=31536000, immutable" />
         <meta httpEquiv="Expires" content="31536000" />
+        
+        {/* Google Fonts */}
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet" />
         
         <meta name="google-adsense-account" content="ca-pub-6995096219329553" />
 
@@ -128,7 +132,10 @@ html {
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <ScrollingBanner />
+        {children}
+      </body>
     </html>
   )
 }
