@@ -119,21 +119,41 @@ export default function AdminPage() {
         generated_at: new Date().toISOString()
       }
 
-      // JSON dosyasını indir
+      // JSON dosyasını public/data klasörüne kaydet
       const jsonString = JSON.stringify(data, null, 2)
-      const blob = new Blob([jsonString], { type: 'application/json' })
-      const url = URL.createObjectURL(blob)
       
-      // Dosyayı indir
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `rankings-${videoDate}.json`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-      
-      toast.success(`${rankingsArray.length} kayıt hazırlandı! Dosya indirildi.`)
+      // Dosyayı public/data klasörüne kaydet
+      try {
+        // Node.js fs kullanarak dosyayı kaydet
+        const response = await fetch('/api/save-file', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: `rankings-${videoDate}.json`,
+            content: jsonString
+          })
+        })
+        
+        if (response.ok) {
+          toast.success(`${rankingsArray.length} kayıt başarıyla kaydedildi!`)
+        } else {
+          throw new Error('Dosya kaydetme hatası')
+        }
+      } catch (error) {
+        // Fallback: dosyayı indir
+        const blob = new Blob([jsonString], { type: 'application/json' })
+        const url = URL.createObjectURL(blob)
+        
+        const a = document.createElement('a')
+        a.href = url
+        a.download = `rankings-${videoDate}.json`
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+        URL.revokeObjectURL(url)
+        
+        toast.success(`${rankingsArray.length} kayıt hazırlandı! Dosya indirildi - public/data klasörüne kopyalayın.`)
+      }
       
       // Formu temizle
       setVideoDate("")
@@ -154,27 +174,34 @@ export default function AdminPage() {
     setLoading(true)
     
     try {
-      // Manuel deploy talimatları göster
+      // Git push yaparak deploy et
+      const response = await fetch('/api/deploy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      
+      if (response.ok) {
+        toast.success("Deploy başlatıldı! Site 2-3 dakika içinde güncellenecek...")
+      } else {
+        throw new Error('Deploy hatası')
+      }
+
+    } catch (error) {
+      // Fallback: manuel talimatlar
       toast.success("Deploy talimatları:")
       
-      // Talimatları göster
       const instructions = `
 DEPLOY TALİMATLARI:
 
-1. İndirilen JSON dosyasını public/data/ klasörüne kopyalayın
-2. Terminal'de şu komutları çalıştırın:
+1. Terminal'de şu komutları çalıştırın:
    git add .
    git commit -m "Veri güncellendi"
    git push origin master
 
-3. Netlify otomatik olarak deploy edecek (2-3 dakika)
+2. Netlify otomatik olarak deploy edecek (2-3 dakika)
       `
       
       alert(instructions)
-      
-    } catch (error) {
-      toast.error("Hata oluştu!")
-      console.error(error)
     } finally {
       setLoading(false)
     }
@@ -329,36 +356,19 @@ DEPLOY TALİMATLARI:
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Save className="h-5 w-5" />
-                  Deploy Talimatları
+                  Deploy Et
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <p className="text-muted-foreground">
-                    İndirilen JSON dosyasını siteye yüklemek için:
+                    Veriler otomatik olarak kaydedildi. Siteyi güncellemek için deploy edin.
                   </p>
                   
-                  <div className="bg-muted/50 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Adım 1: Dosyayı Kopyala</h4>
-                    <p className="text-sm text-muted-foreground">
-                      İndirilen <code>rankings-YYYY-MM-DD.json</code> dosyasını 
-                      <code>public/data/</code> klasörüne kopyalayın
-                    </p>
-                  </div>
-                  
-                  <div className="bg-muted/50 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Adım 2: Git Komutları</h4>
-                    <div className="bg-black text-green-400 p-3 rounded font-mono text-sm">
-                      <div>git add .</div>
-                      <div>git commit -m "Veri güncellendi"</div>
-                      <div>git push origin master</div>
-                    </div>
-                  </div>
-                  
-                  <div className="bg-muted/50 p-4 rounded-lg">
-                    <h4 className="font-semibold mb-2">Adım 3: Otomatik Deploy</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Netlify otomatik olarak deploy edecek (2-3 dakika)
+                  <div className="bg-green-50 border border-green-200 p-4 rounded-lg">
+                    <h4 className="font-semibold text-green-800 mb-2">✅ Otomatik Deploy</h4>
+                    <p className="text-sm text-green-700">
+                      Veriler public/data/ klasörüne kaydedildi. Deploy butonuna basarak siteyi güncelleyin.
                     </p>
                   </div>
                   
@@ -367,7 +377,7 @@ DEPLOY TALİMATLARI:
                     disabled={loading}
                     className="w-full bg-green-600 hover:bg-green-700"
                   >
-                    {loading ? "Talimatlar Gösteriliyor..." : "Talimatları Göster"}
+                    {loading ? "Deploy Ediliyor..." : "Siteyi Güncelle"}
                   </Button>
                 </div>
               </CardContent>
