@@ -40,13 +40,27 @@ export default async function HomePage() {
   const latestDate = availableDates[0] // Most recent date
   const latestRankings = staticData?.rankings?.slice(0, 5) || []
   
-  // Create videos array from available dates
-  const videos = availableDates.map(date => ({
-    video_date: date,
-    title: null,
-    description: null,
-    thumbnail_url: null
-  }))
+  // Create videos array from available dates with actual data
+  const videos = availableDates.map(date => {
+    try {
+      // Try to get video data from static file
+      const videoData = require(`../public/data/rankings-${date}.json`)
+      return {
+        video_date: date,
+        title: videoData.title || `${date} tarihli video`,
+        description: videoData.description || 'Video açıklaması',
+        thumbnail_url: videoData.thumbnail_url || '/default-thumbnail.png'
+      }
+    } catch (error) {
+      // Fallback if file doesn't exist
+      return {
+        video_date: date,
+        title: `${date} tarihli video`,
+        description: 'Video açıklaması',
+        thumbnail_url: '/default-thumbnail.png'
+      }
+    }
+  })
 
   return (
     <div className="min-h-screen bg-background">
@@ -141,9 +155,11 @@ export default async function HomePage() {
                         </div>
                         <div className="flex-1">
                           <h4 className="font-semibold text-foreground mb-1">
-                            {displayDate} tarihinde paylaşılan video
+                            {video.title || `${displayDate} tarihinde paylaşılan video`}
                           </h4>
-                          <p className="text-sm text-muted-foreground">Sıralamaları görmek için tıklayın</p>
+                          <p className="text-sm text-muted-foreground">
+                            {video.description || 'Sıralamaları görmek için tıklayın'}
+                          </p>
                         </div>
                       </div>
                     </Link>

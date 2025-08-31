@@ -7,18 +7,24 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { Badge } from "@/components/ui/badge"
-import { Database, Upload, Calendar, Users, Save } from "lucide-react"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Database, Upload, Calendar, Users, Save, FileText, Image, Edit, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 
 export default function AdminPage() {
   const [videoDate, setVideoDate] = useState("")
-  const [rankings, setRankings] = useState("")
+  const [videoTitle, setVideoTitle] = useState("")
+  const [videoDescription, setVideoDescription] = useState("")
+  const [videoThumbnail, setVideoThumbnail] = useState("")
+  const [jsonFile, setJsonFile] = useState<File | null>(null)
   const [loading, setLoading] = useState(false)
   const [existingData, setExistingData] = useState<any[]>([])
+  const [existingVideos, setExistingVideos] = useState<any[]>([])
 
   // Mevcut verileri yükle
   useEffect(() => {
     loadExistingData()
+    loadExistingVideos()
   }, [])
 
   const loadExistingData = async () => {
@@ -31,30 +37,72 @@ export default function AdminPage() {
     }
   }
 
+  const loadExistingVideos = async () => {
+    try {
+      // Mevcut video dosyalarını listele
+      const dates = ['2025-08-31'] // Şimdilik sabit, sonra dinamik yapacağız
+      const videos = []
+      
+      for (const date of dates) {
+        try {
+          const response = await fetch(`/data/rankings-${date}.json`)
+          const data = await response.json()
+          videos.push({
+            date: date,
+            title: data.title || `${date} tarihli video`,
+            description: data.description || 'Video açıklaması',
+            thumbnail: data.thumbnail_url || '/default-thumbnail.png',
+            count: data.rankings?.length || 0
+          })
+        } catch (error) {
+          console.log(`Video ${date} bulunamadı`)
+        }
+      }
+      
+      setExistingVideos(videos)
+    } catch (error) {
+      console.error('Video yükleme hatası:', error)
+    }
+  }
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setJsonFile(file)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
 
     try {
-      // Veriyi işle
-      const rankingsArray = rankings
-        .split('\n')
-        .filter(line => line.trim())
-        .map((line, index) => {
-          const [username, rank] = line.split(',').map(s => s.trim())
-          return {
-            id: index + 1,
-            username: username,
-            profile_picture_url: null,
-            rank: parseInt(rank) || index + 1,
-            created_at: videoDate,
-            updated_at: new Date().toISOString()
-          }
-        })
+      let rankingsArray = []
+
+      if (jsonFile) {
+        // JSON dosyasından oku
+        const text = await jsonFile.text()
+        const jsonData = JSON.parse(text)
+        
+        rankingsArray = jsonData.map((item: any, index: number) => ({
+          id: index + 1,
+          username: item.username,
+          profile_picture_url: item.profile_picture_url || null,
+          rank: item.rank || index + 1,
+          created_at: videoDate,
+          updated_at: new Date().toISOString()
+        }))
+      } else {
+        toast.error("JSON dosyası seçin!")
+        return
+      }
 
       // JSON dosyasını oluştur
       const data = {
         video_date: videoDate,
+        title: videoTitle || `${videoDate} tarihli video`,
+        description: videoDescription || 'Video açıklaması',
+        thumbnail_url: videoThumbnail || null,
         rankings: rankingsArray,
         total_count: rankingsArray.length,
         generated_at: new Date().toISOString()
@@ -67,10 +115,14 @@ export default function AdminPage() {
       
       // Formu temizle
       setVideoDate("")
-      setRankings("")
+      setVideoTitle("")
+      setVideoDescription("")
+      setVideoThumbnail("")
+      setJsonFile(null)
       
     } catch (error) {
-      toast.error("Hata oluştu!")
+      toast.error("JSON dosyası okuma hatası!")
+      console.error(error)
     } finally {
       setLoading(false)
     }
@@ -132,7 +184,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-background p-4">
-      <div className="max-w-4xl mx-auto space-y-6">
+      <div className="max-w-6xl mx-auto space-y-6">
         
         {/* Header */}
         <div className="text-center">
@@ -140,70 +192,163 @@ export default function AdminPage() {
           <p className="text-muted-foreground">Veri ekleme ve yönetim paneli</p>
         </div>
 
-        {/* Veri Ekleme Formu */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Upload className="h-5 w-5" />
-              Yeni Veri Ekle
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <Label htmlFor="videoDate">Video Tarihi</Label>
-                <Input
-                  id="videoDate"
-                  type="date"
-                  value={videoDate}
-                  onChange={(e) => setVideoDate(e.target.value)}
-                  required
-                />
-              </div>
-              
-              <div>
-                <Label htmlFor="rankings">Sıralamalar</Label>
-                <Textarea
-                  id="rankings"
-                  placeholder="Her satırda: kullanıcı_adı,sıra&#10;Örnek:&#10;john_doe,1&#10;jane_smith,2&#10;mike_wilson,3"
-                  value={rankings}
-                  onChange={(e) => setRankings(e.target.value)}
-                  rows={10}
-                  required
-                />
-                <p className="text-sm text-muted-foreground mt-1">
-                  Her satırda kullanıcı adı ve sırasını virgülle ayırın
-                </p>
-              </div>
-              
-              <Button type="submit" disabled={loading} className="w-full">
-                {loading ? "İşleniyor..." : "Veriyi Hazırla"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="add-data" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="add-data">Yeni Veri Ekle</TabsTrigger>
+            <TabsTrigger value="manage-videos">Video Yönetimi</TabsTrigger>
+            <TabsTrigger value="deploy">Deploy</TabsTrigger>
+          </TabsList>
 
-        {/* Deploy Butonu */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Save className="h-5 w-5" />
-              Deploy Et
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              Hazırlanan verileri siteye yükleyin. Bu işlem 2-3 dakika sürebilir.
-            </p>
-            <Button 
-              onClick={deployData} 
-              disabled={loading}
-              className="w-full bg-green-600 hover:bg-green-700"
-            >
-              {loading ? "Deploy Ediliyor..." : "Siteye Deploy Et"}
-            </Button>
-          </CardContent>
-        </Card>
+          {/* Yeni Veri Ekleme Tab */}
+          <TabsContent value="add-data">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Upload className="h-5 w-5" />
+                  Yeni Veri Ekle
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="videoDate">Video Tarihi</Label>
+                      <Input
+                        id="videoDate"
+                        type="date"
+                        value={videoDate}
+                        onChange={(e) => setVideoDate(e.target.value)}
+                        required
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="videoTitle">Video Başlığı</Label>
+                      <Input
+                        id="videoTitle"
+                        value={videoTitle}
+                        onChange={(e) => setVideoTitle(e.target.value)}
+                        placeholder="Video başlığı (opsiyonel)"
+                      />
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="videoDescription">Video Açıklaması</Label>
+                    <Textarea
+                      id="videoDescription"
+                      value={videoDescription}
+                      onChange={(e) => setVideoDescription(e.target.value)}
+                      placeholder="Video açıklaması (opsiyonel)"
+                      rows={3}
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="videoThumbnail">Video Görseli URL</Label>
+                    <Input
+                      id="videoThumbnail"
+                      value={videoThumbnail}
+                      onChange={(e) => setVideoThumbnail(e.target.value)}
+                      placeholder="https://example.com/image.jpg (opsiyonel)"
+                    />
+                  </div>
+                  
+                  <div>
+                    <Label htmlFor="jsonFile">JSON Dosyası</Label>
+                    <Input
+                      id="jsonFile"
+                      type="file"
+                      accept=".json"
+                      onChange={handleFileUpload}
+                      required
+                    />
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Sıralama verilerini içeren JSON dosyasını seçin
+                    </p>
+                    {jsonFile && (
+                      <p className="text-sm text-green-600 mt-1">
+                        ✅ {jsonFile.name} seçildi
+                      </p>
+                    )}
+                  </div>
+                  
+                  <Button type="submit" disabled={loading} className="w-full">
+                    {loading ? "İşleniyor..." : "Veriyi Hazırla"}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Video Yönetimi Tab */}
+          <TabsContent value="manage-videos">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Edit className="h-5 w-5" />
+                  Mevcut Videolar
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {existingVideos.map((video, index) => (
+                    <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center gap-4">
+                        <div className="w-16 h-12 bg-muted rounded overflow-hidden">
+                          <img 
+                            src={video.thumbnail} 
+                            alt={video.title}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold">{video.title}</h3>
+                          <p className="text-sm text-muted-foreground">{video.description}</p>
+                          <p className="text-xs text-muted-foreground">{video.date} - {video.count} kayıt</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button size="sm" variant="outline">
+                          <Edit className="h-4 w-4 mr-1" />
+                          Düzenle
+                        </Button>
+                        <Button size="sm" variant="outline" className="text-red-600">
+                          <Trash2 className="h-4 w-4 mr-1" />
+                          Sil
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Deploy Tab */}
+          <TabsContent value="deploy">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Save className="h-5 w-5" />
+                  Deploy Et
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-muted-foreground mb-4">
+                  Hazırlanan verileri siteye yükleyin. Bu işlem 2-3 dakika sürebilir.
+                </p>
+                <Button 
+                  onClick={deployData} 
+                  disabled={loading}
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  {loading ? "Deploy Ediliyor..." : "Siteye Deploy Et"}
+                </Button>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
 
         {/* Mevcut Veriler */}
         <Card>
