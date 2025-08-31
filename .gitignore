@@ -104,7 +104,7 @@ typings/
 
 # Gatsby files
 .cache/
-public
+# public - Static data için gerekli
 
 # Storybook build outputs
 .out
