@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build": "next build",
+    "build": "npm run generate-data && next build",
     "dev": "next dev",
     "lint": "next lint",
     "start": "next start",
+    "generate-data": "node scripts/generate-static-data.js",
+    "daily-upload": "node scripts/daily-upload.js",
+    "deploy": "node scripts/deploy.js",
     "pages:build": "next build && wrangler pages build",
     "pages:deploy": "wrangler pages deploy out",
     "workers:deploy": "wrangler deploy"

@@ -42,13 +42,13 @@ const getCachedVideos = unstable_cache(
     try {
       const result = await executeQuery(`
         SELECT DISTINCT 
-          r.created_at as video_date,
-          r.title as video_title,
-          r.description as video_description,
-          r.thumbnail_url as video_thumbnail_url
-        FROM videos r 
-        WHERE r.created_at IS NOT NULL 
-        ORDER BY r.created_at DESC
+          v.created_at as video_date,
+          v.title as video_title,
+          v.description as video_description,
+          v.thumbnail_url as video_thumbnail_url
+        FROM videos v 
+        WHERE v.created_at IS NOT NULL 
+        ORDER BY v.created_at DESC
       `)
 
       return (result.rows || []).map((video: any) => ({

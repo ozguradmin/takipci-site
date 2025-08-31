@@ -1,13 +1,14 @@
 import { createClient } from "@libsql/client"
 
-const databaseUrl = process.env.TURSO_DATABASE_URL
-const authToken = process.env.TURSO_AUTH_TOKEN
+const databaseUrl = process.env.TURSO_DATABASE_URL || "file:./dev.db"
+const authToken = process.env.TURSO_AUTH_TOKEN || "dummy"
 
-if (!databaseUrl) {
+// Only throw error in production
+if (!process.env.TURSO_DATABASE_URL && process.env.NODE_ENV === "production") {
   throw new Error("TURSO_DATABASE_URL environment variable is required. Please add it to your Project Settings.")
 }
 
-if (!authToken) {
+if (!process.env.TURSO_AUTH_TOKEN && process.env.NODE_ENV === "production") {
   throw new Error("TURSO_AUTH_TOKEN environment variable is required. Please add it to your Project Settings.")
 }
 

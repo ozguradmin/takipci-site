@@ -2,7 +2,16 @@ import { Instagram, Play, Trophy } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
-import { getVideosStatic, getLatestVideoRankingsStatic } from "@/lib/video-actions"
+// Simple helper functions
+function formatDateForUrl(date: string): string {
+  const [year, month, day] = date.split('-');
+  return `${day}-${month}-${year}`;
+}
+
+function formatDateForDisplay(date: string): string {
+  const [year, month, day] = date.split('-');
+  return `${day}.${month}.${year}`;
+}
 import AdSenseAd from "@/components/adsense-ad"
 import HamburgerMenu from "@/components/hamburger-menu"
 import FallbackImage from "@/components/fallback-image"
@@ -21,36 +30,19 @@ export const metadata = {
 }
 
 export default async function HomePage() {
-  let videos = []
-  let latestRankings = []
-
-  try {
-    ;[videos, latestRankings] = await Promise.all([
-      getVideosStatic().catch(() => []),
-      getLatestVideoRankingsStatic().catch(() => []),
-    ])
-  } catch (error) {
-    console.error("[v0] Error loading homepage data:", error)
-    // Fallback to empty arrays if both fail
-  }
-
-  // Format video dates for display and URLs
-  const formatDateForDisplay = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleDateString("tr-TR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    })
-  }
-
-  const formatDateForUrl = (dateString: string) => {
-    const date = new Date(dateString)
-    const day = date.getDate().toString().padStart(2, "0")
-    const month = (date.getMonth() + 1).toString().padStart(2, "0")
-    const year = date.getFullYear()
-    return `${day}-${month}-${year}`
-  }
+  // Test data
+  const videos = [
+    {
+      video_date: "2025-08-31",
+      title: null,
+      description: null,
+      thumbnail_url: null
+    }
+  ]
+  
+  const latestRankings = [
+    { id: 1, username: "test", profile_picture_url: null, rank: 1 }
+  ]
 
   return (
     <div className="min-h-screen bg-background">

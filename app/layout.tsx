@@ -25,13 +25,15 @@ export default function RootLayout({
   return (
     <html lang="tr" className="dark">
       <head>
-        <style>{`
+        <style dangerouslySetInnerHTML={{
+          __html: `
 html {
   font-family: ${GeistSans.style.fontFamily};
   --font-sans: ${GeistSans.variable};
   --font-mono: ${GeistMono.variable};
 }
-        `}</style>
+          `
+        }} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
         <meta name="google-adsense-account" content="ca-pub-6995096219329553" />

@@ -19,7 +19,12 @@ export default function AdSenseAd({
   style = { display: "block" },
   className = "",
 }: AdSenseAdProps) {
+  // Development ortamında AdSense'i devre dışı bırak
+  const isDevelopment = process.env.NODE_ENV === "development"
+
   useEffect(() => {
+    if (isDevelopment) return // Development'da AdSense çalıştırma
+    
     try {
       // @ts-ignore
       if (typeof window !== "undefined" && window.adsbygoogle) {
@@ -29,7 +34,16 @@ export default function AdSenseAd({
     } catch (error) {
       console.error("AdSense error:", error)
     }
-  }, [])
+  }, [isDevelopment])
+
+  // Development ortamında placeholder göster
+  if (isDevelopment) {
+    return (
+      <div className={`adsense-placeholder ${className}`} style={{...style, backgroundColor: '#f0f0f0', border: '2px dashed #ccc', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#666', fontSize: '14px'}}>
+        AdSense Placeholder
+      </div>
+    )
+  }
 
   return (
     <div className={`adsense-container ${className}`}>
