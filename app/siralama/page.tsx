@@ -1,9 +1,9 @@
-import { executeQuery } from "@/lib/turso/server"
 import { Trophy, Medal, Award, Crown } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 import RankingSearch from "@/components/ranking-search"
+import { getStaticData } from "@/lib/static-data"
 
 interface RankingUser {
   id: number
@@ -15,14 +15,8 @@ interface RankingUser {
 }
 
 export default async function SiralamaPage() {
-  let rankingData: RankingUser[] = []
-
-  try {
-    const result = await executeQuery("SELECT * FROM rankings ORDER BY rank ASC")
-    rankingData = (result.rows || []) as RankingUser[]
-  } catch (error) {
-    console.error("Error fetching rankings:", error)
-  }
+  const staticData = getStaticData()
+  const rankingData: RankingUser[] = staticData?.rankings || []
 
   return (
     <div className="min-h-screen bg-background">
