@@ -13,6 +13,7 @@
     "deploy:netlify": "node scripts/netlify-deploy.js",
     "deploy:vercel": "node scripts/vercel-deploy.js",
     "deploy:cloudflare": "node scripts/cloudflare-deploy.js",
+    "deploy:manual": "node scripts/manual-deploy.js",
     "pages:build": "next build && wrangler pages build",
     "pages:deploy": "wrangler pages deploy out",
     "workers:deploy": "wrangler deploy"
