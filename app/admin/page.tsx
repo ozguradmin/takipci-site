@@ -205,7 +205,7 @@ DEPLOY TALİMATLARI:
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-4">
+    <div className="min-h-screen bg-background text-foreground p-4 dark:bg-background dark:text-foreground">
       <div className="max-w-6xl mx-auto space-y-6">
         
         {/* Header */}

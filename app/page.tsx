@@ -72,9 +72,9 @@ export default async function HomePage() {
   })
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground dark:bg-background dark:text-foreground">
       {/* Header */}
-      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm dark:bg-background/80 dark:border-border/50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -122,7 +122,7 @@ export default async function HomePage() {
 
                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
                         {/* Latest Videos */}
-                        <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-card dark:border-border">
                           <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-foreground">
                               <Play className="h-5 w-5 text-primary" />
@@ -182,7 +182,7 @@ export default async function HomePage() {
             </Card>
 
                                     {/* Top Rankings Preview */}
-                        <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300">
+                        <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-card dark:border-border">
                           <CardHeader>
                             <CardTitle className="flex items-center gap-2 text-foreground">
                               <Trophy className="h-5 w-5 text-primary" />
@@ -242,7 +242,7 @@ export default async function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border/50 bg-background/50 backdrop-blur-sm py-8 mt-16">
+      <footer className="border-t border-border/50 bg-background/50 backdrop-blur-sm py-8 mt-16 dark:bg-background/50 dark:border-border/50">
         <div className="container mx-auto px-4 text-center">
           <div className="mb-6 flex justify-center">
             <AdSenseAd

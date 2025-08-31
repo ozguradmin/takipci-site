@@ -55,9 +55,9 @@ export default async function VideoRankingPage({ params }: VideoRankingPageProps
   const { video, rankings } = staticData
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground dark:bg-background dark:text-foreground">
       {/* Header */}
-      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+      <header className="border-b border-border/50 bg-background/80 backdrop-blur-md sticky top-0 z-50 shadow-sm dark:bg-background/80 dark:border-border/50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center gap-4">
             <Link href="/">
