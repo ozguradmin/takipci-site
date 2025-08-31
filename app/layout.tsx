@@ -35,7 +35,11 @@ html {
           `
         }} />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-
+        
+        {/* Cache Control Headers */}
+        <meta httpEquiv="Cache-Control" content="public, max-age=31536000, immutable" />
+        <meta httpEquiv="Expires" content="31536000" />
+        
         <meta name="google-adsense-account" content="ca-pub-6995096219329553" />
 
         <script

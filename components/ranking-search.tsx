@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Trophy, Medal, Award, Crown } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
+import Image from "next/image"
+import { getOptimizedQuality, getOptimizedSizes } from "@/lib/image-utils"
 
 interface RankingUser {
   id: number
@@ -249,14 +251,19 @@ function RankingSearch({ rankings, videoDate }: RankingSearchProps) {
 
             {/* Profile Picture */}
             <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden border-2 border-border bg-muted flex-shrink-0">
-              <img
+              <Image
                 src={
                   user.username
                     ? `https://pub-63c4f2af186d48f184dea3dfce00ba35.r2.dev/${user.username}.jpg`
                     : "/placeholder.svg?height=60&width=60"
                 }
                 alt={user.username}
+                width={56}
+                height={56}
                 className="w-full h-full object-cover"
+                quality={getOptimizedQuality(56)}
+                loading="lazy"
+                sizes={getOptimizedSizes(56)}
                 onError={(e) => {
                   const target = e.target as HTMLImageElement
                   target.src = "/placeholder.svg?height=60&width=60"

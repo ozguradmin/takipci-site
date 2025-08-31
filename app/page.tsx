@@ -6,6 +6,7 @@ import Link from "next/link"
 import HamburgerMenu from "@/components/hamburger-menu"
 import FallbackImage from "@/components/fallback-image"
 import { getStaticData, getAvailableVideoDates } from "@/lib/static-data"
+import { getOptimizedQuality, getOptimizedSizes, getLoadingStrategy, getPriorityStrategy } from "@/lib/image-utils"
 
 // Simple helper functions
 function formatDateForUrl(date: string): string {
@@ -145,10 +146,10 @@ export default async function HomePage() {
                               width={80}
                               height={56}
                               className="w-full h-full object-cover"
-                              priority={index === 0}
-                              loading={index === 0 ? "eager" : "lazy"}
-                              sizes="80px"
-                              quality={75}
+                              priority={getPriorityStrategy(index, videos.length)}
+                              loading={getLoadingStrategy(index, videos.length)}
+                              sizes={getOptimizedSizes(80)}
+                              quality={getOptimizedQuality(80)}
                               fallbackSrc="/default-thumbnail.png"
                             />
                           ) : (
@@ -201,8 +202,8 @@ export default async function HomePage() {
                         height={40}
                         className="w-full h-full object-cover"
                         loading="lazy"
-                        sizes="40px"
-                        quality={60}
+                        sizes={getOptimizedSizes(40)}
+                        quality={getOptimizedQuality(40)}
                         fallbackSrc="/profile-picture.png"
                       />
                     </div>
