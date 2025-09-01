@@ -57,7 +57,6 @@ async function generateStaticData() {
           thumbnail_url: video[3] // thumbnail_url
         },
         rankings: rankings.map(row => ({
-          id: row[0],
           username: row[1],
           profile_picture_url: row[2],
           rank: row[3]
@@ -70,7 +69,7 @@ async function generateStaticData() {
       const fileName = `rankings-${videoDate}.json`;
       const filePath = path.join(dataDir, fileName);
       
-      fs.writeFileSync(filePath, JSON.stringify(videoData, null, 2));
+      fs.writeFileSync(filePath, JSON.stringify(videoData));
       console.log(`✅ ${fileName} oluşturuldu (${rankings.length} kayıt)`);
     }
 
@@ -97,7 +96,6 @@ async function generateStaticData() {
           thumbnail_url: latestVideo[3]
         },
         rankings: latestRankings.map(row => ({
-          id: row[0],
           username: row[1],
           profile_picture_url: row[2],
           rank: row[3]
@@ -107,7 +105,7 @@ async function generateStaticData() {
       };
 
       const mainFilePath = path.join(dataDir, 'rankings.json');
-      fs.writeFileSync(mainFilePath, JSON.stringify(mainData, null, 2));
+      fs.writeFileSync(mainFilePath, JSON.stringify(mainData));
       console.log(`✅ Ana rankings.json oluşturuldu (${latestRankings.length} kayıt)`);
     }
 

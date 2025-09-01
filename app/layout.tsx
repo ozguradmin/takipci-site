@@ -52,6 +52,45 @@ html {
           crossOrigin="anonymous"
         ></script>
 
+        {/* Initialize cache system */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            // Initialize browser cache on page load
+            window.addEventListener('DOMContentLoaded', function() {
+              try {
+                // Clear expired cache items
+                const CACHE_PREFIX = 'takipci_cache_';
+                const keys = Object.keys(localStorage);
+                let cleared = 0;
+                
+                keys.forEach(key => {
+                  if (key.startsWith(CACHE_PREFIX)) {
+                    try {
+                      const item = localStorage.getItem(key);
+                      if (item) {
+                        const parsed = JSON.parse(item);
+                        if (Date.now() > parsed.expires) {
+                          localStorage.removeItem(key);
+                          cleared++;
+                        }
+                      }
+                    } catch {
+                      localStorage.removeItem(key);
+                      cleared++;
+                    }
+                  }
+                });
+                
+                if (cleared > 0) {
+                  console.log('Cleared', cleared, 'expired cache items');
+                }
+              } catch (error) {
+                console.warn('Cache cleanup failed:', error);
+              }
+            });
+          `
+        }} />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
