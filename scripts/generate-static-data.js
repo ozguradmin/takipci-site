@@ -109,6 +109,11 @@ async function generateStaticData() {
       console.log(`✅ Ana rankings.json oluşturuldu (${latestRankings.length} kayıt)`);
     }
 
+    // Otomatik JSON optimizasyonu
+    console.log('🔧 JSON dosyaları otomatik optimize ediliyor...');
+    const { optimizeAllJsonFiles } = require('./optimize-json');
+    await optimizeAllJsonFiles();
+    
     console.log('🎉 Static data generation tamamlandı!');
 
   } catch (error) {
