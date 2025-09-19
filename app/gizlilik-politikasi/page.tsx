@@ -5,10 +5,12 @@ import HamburgerMenu from "@/components/hamburger-menu"
 
 export const metadata = {
   title: "Gizlilik Politikası - Takipçilerimi Dövüştürüyorum",
-  description: "Gizlilik politikamız ve kişisel verilerinizin nasıl korunduğu hakkında bilgi alın.",
+  description: "takipcileridovusturuyorum.com olarak gizliliğinize nasıl saygı duyduğumuz ve verilerinizi nasıl koruduğumuz hakkında detaylı bilgi edinin.",
 }
 
 export default function PrivacyPolicyPage() {
+  const lastUpdated = "19 Eylül 2025"
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -17,8 +19,10 @@ export default function PrivacyPolicyPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <HamburgerMenu />
-              <Trophy className="h-8 w-8 text-primary" />
-              <h1 className="text-xl md:text-2xl font-bold text-foreground">takipcileridovusturuyorum</h1>
+              <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                <Trophy className="h-8 w-8 text-primary" />
+                <h1 className="text-xl md:text-2xl font-bold text-foreground">takipcileridovusturuyorum</h1>
+              </Link>
             </div>
             <Link
               href="https://www.instagram.com/takipcileridovusturuyorum"
@@ -36,7 +40,9 @@ export default function PrivacyPolicyPage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Gizlilik Politikası</h2>
-            <p className="text-lg text-muted-foreground">Kişisel verilerinizin korunması bizim için önemlidir</p>
+            <p className="text-lg text-muted-foreground">
+              Son Güncelleme: {lastUpdated}
+            </p>
           </div>
 
           <div className="space-y-8">
@@ -44,73 +50,64 @@ export default function PrivacyPolicyPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Shield className="h-5 w-5 text-primary" />
-                  Toplanan Bilgiler
+                  Giriş
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground leading-relaxed">
-                  Web sitemizde aşağıdaki bilgiler toplanmaktadır:
+                  Bu gizlilik politikası, <strong>takipcileridovusturuyorum.com</strong> ("Site", "biz", "bize" veya "bizim") olarak, sitemizi ziyaret ettiğinizde veya hizmetlerimizi kullandığınızda kişisel bilgilerinizi nasıl topladığımızı, kullandığımızı, koruduğumuzu ve ifşa ettiğimizi açıklamaktadır. Gizliliğiniz bizim için son derece önemlidir ve verilerinizi korumayı taahhüt ediyoruz.
                 </p>
-                <ul className="list-disc list-inside text-muted-foreground space-y-2">
-                  <li>Instagram kullanıcı adları (sadece sıralama amaçlı)</li>
-                  <li>Web sitesi kullanım istatistikleri (Google Analytics)</li>
-                  <li>Çerezler (site performansı için)</li>
-                </ul>
               </CardContent>
             </Card>
 
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
-                <CardTitle>Bilgilerin Kullanımı</CardTitle>
+                <CardTitle>Topladığımız Bilgiler</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground leading-relaxed">
-                  Toplanan bilgiler aşağıdaki amaçlarla kullanılır:
+                  Hizmetlerimizi sunmak ve geliştirmek için çeşitli türde bilgiler topluyoruz:
                 </p>
                 <ul className="list-disc list-inside text-muted-foreground space-y-2">
-                  <li>Takipçi sıralama sisteminin işletilmesi</li>
-                  <li>Web sitesi performansının iyileştirilmesi</li>
-                  <li>Kullanıcı deneyiminin geliştirilmesi</li>
-                  <li>İstatistiksel analiz yapılması</li>
+                  <li>
+                    <strong>Kullanıcı Tarafından Sağlanan Bilgiler:</strong> Sıralama sistemimize katılmak için gönderdiğiniz Instagram kullanıcı adları gibi bilgileri topluyoruz. Bu bilgiler, yalnızca sıralama oluşturma ve gösterme amacıyla kullanılır.
+                  </li>
+                  <li>
+                    <strong>Otomatik Olarak Toplanan Bilgiler:</strong> Sitemizi ziyaret ettiğinizde, IP adresi, tarayıcı türü, işletim sistemi, ziyaret edilen sayfalar ve ziyaret süresi gibi standart web sunucusu günlüklerini ve analitik verileri (Google Analytics aracılığıyla) toplarız. Bu veriler, site trafiğini analiz etmek ve hizmet kalitemizi artırmak için kullanılır.
+                  </li>
                 </ul>
               </CardContent>
             </Card>
 
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
-                <CardTitle>Veri Güvenliği</CardTitle>
+                <CardTitle>Çerezler ve Benzeri Teknolojiler</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Verilerinizin güvenliği için endüstri standardı güvenlik önlemleri alınmaktadır. Tüm veriler
-                  şifrelenmiş bağlantılar üzerinden iletilir ve güvenli sunucularda saklanır. Kişisel bilgileriniz
-                  hiçbir şekilde üçüncü taraflarla paylaşılmaz.
+                  Web sitemiz, kullanıcı deneyimini iyileştirmek, site performansını analiz etmek ve reklamları kişiselleştirmek amacıyla çerezler kullanır. Çerezler, tarayıcınızda saklanan küçük metin dosyalarıdır. Sitemizi kullanarak çerez kullanımını kabul etmiş olursunuz. Tarayıcınızın ayarlarından çerezleri yönetebilir veya devre dışı bırakabilirsiniz, ancak bu durum sitenin bazı işlevlerinin düzgün çalışmamasına neden olabilir.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
-                <CardTitle>Çerezler</CardTitle>
+                <CardTitle>Google AdSense ve Reklamcılık</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Web sitemiz, kullanıcı deneyimini iyileştirmek için çerezler kullanır. Bu çerezler site performansını
-                  analiz etmek ve size daha iyi hizmet sunmak için kullanılır. Tarayıcınızın ayarlarından çerezleri
-                  devre dışı bırakabilirsiniz.
+                  Sitemizde reklam sunmak için üçüncü taraf reklam ağı olan Google AdSense'i kullanıyoruz. Google, ilgi alanlarınıza dayalı reklamlar sunmak için DoubleClick DART çerezi gibi çerezleri kullanabilir. Bu, internetteki diğer sitelere yaptığınız ziyaretlere dayalı olarak reklamların gösterilmesini sağlar. Kullanıcılar, Google Reklam ve İçerik Ağı gizlilik politikasını ziyaret ederek DART çerezinin kullanımını devre dışı bırakabilirler.
                 </p>
               </CardContent>
             </Card>
 
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
-                <CardTitle>Google AdSense</CardTitle>
+                <CardTitle>Veri Güvenliği ve Paylaşımı</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Web sitemizde Google AdSense reklamları gösterilmektedir. Google, size daha alakalı reklamlar
-                  gösterebilmek için çerezler kullanabilir. Google'ın gizlilik politikası hakkında daha fazla bilgi için
-                  Google'ın resmi gizlilik politikasını inceleyebilirsiniz.
+                  Topladığımız kişisel bilgilerin güvenliğini sağlamak için makul idari, teknik ve fiziksel güvenlik önlemleri alıyoruz. Verileriniz, şifrelenmiş bağlantılar (SSL) üzerinden iletilir ve güvenli sunucularda saklanır. Kişisel olarak tanımlanabilir bilgilerinizi, yasal bir zorunluluk olmadıkça veya hizmetlerimizi sağlamak için gerekli olmadıkça (örneğin, barındırma sağlayıcıları gibi) sizin izniniz olmadan üçüncü taraflarla satmayız, kiralamayız veya paylaşmayız.
                 </p>
               </CardContent>
             </Card>
@@ -121,7 +118,7 @@ export default function PrivacyPolicyPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Gizlilik politikamız hakkında sorularınız varsa, bizimle iletişime geçebilirsiniz:
+                  Bu gizlilik politikası ile ilgili herhangi bir sorunuz veya endişeniz varsa, lütfen bizimle iletişime geçmekten çekinmeyin:
                 </p>
                 <div className="mt-4">
                   <Link
@@ -136,12 +133,11 @@ export default function PrivacyPolicyPage() {
 
             <Card className="border-border/50 bg-card/50">
               <CardHeader>
-                <CardTitle>Politika Güncellemeleri</CardTitle>
+                <CardTitle>Politika Değişiklikleri</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Bu gizlilik politikası zaman zaman güncellenebilir. Önemli değişiklikler olduğunda kullanıcılarımızı
-                  bilgilendireceğiz. Son güncelleme tarihi: Ocak 2025
+                  Bu gizlilik politikasını zaman zaman güncelleme hakkını saklı tutarız. Politikada önemli değişiklikler yaptığımızda, bu sayfada yeni politikayı yayınlayarak ve "Son Güncelleme" tarihini değiştirerek sizi bilgilendireceğiz. Değişiklikleri takip etmek için bu sayfayı periyodik olarak gözden geçirmenizi öneririz.
                 </p>
               </CardContent>
             </Card>

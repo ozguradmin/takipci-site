@@ -6,7 +6,7 @@ import HamburgerMenu from "@/components/hamburger-menu"
 export const metadata = {
   title: "Hakkımızda - Takipçilerimi Dövüştürüyorum",
   description:
-    "Takipçilerimi dövüştürme serisi hakkında bilgi alın. Instagram'da 25 bin takipçiyle başlayan bu eğlenceli yarışma nasıl çalışır?",
+    "takipcileridovusturuyorum.com projesinin hikayesini, misyonunu ve arkasındaki ekibi tanıyın. Instagram'daki en eğlenceli yarışmanın perde arkası.",
 }
 
 export default function AboutPage() {
@@ -40,12 +40,26 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Hakkımızda</h2>
             <p className="text-lg text-muted-foreground">
-              Takipçilerimi dövüştürme serisinin hikayesi ve nasıl çalıştığı
+              Bir Fikirden Topluluğa: Takipçi Dövüştürme Serisinin Hikayesi
             </p>
           </div>
 
+          <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg mb-12">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-2xl">
+                <Users className="h-6 w-6 text-primary" />
+                Misyonumuz
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground leading-relaxed text-lg">
+                <strong>takipcileridovusturuyorum.com</strong> olarak misyonumuz, sosyal medya etkileşimini sıradanlıktan çıkarıp, takipçiler için eğlenceli, rekabetçi ve bağ kurabilecekleri bir platforma dönüştürmektir. Amacımız, her gün binlerce insanın heyecanla sonuçları beklediği, kendi sıralamasını gördüğü ve bu rekabetin bir parçası olmaktan keyif aldığı bir topluluk oluşturmaktır.
+              </p>
+            </CardContent>
+          </Card>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-            <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-card dark:border-border">
+            <Card className="border-border/50 bg-card/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Users className="h-5 w-5 text-primary" />
@@ -54,23 +68,21 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Instagram'da 35+ bin takipçim var ve onları eğlenceli bir yarışmaya dahil etme fikri aklıma geldi. Her
-                  video paylaştığımda takipçilerimi birbirleriyle "dövüştürüyorum" - tabii ki eğlenceli bir şekilde!
+                  Her şey, 35.000'den fazla takipçiye sahip Instagram hesabımızda basit bir fikirle başladı: "Takipçilerle nasıl daha eğlenceli bir etkileşim kurabiliriz?" Bu sorunun cevabı, onları tatlı bir rekabete sokan video serisi oldu. Her video, takipçiler arasında kimin daha üstün olduğunu belirleyen (tamamen eğlence amaçlı) bir "dövüş" içeriyordu. Bu fikir, beklenenden çok daha fazla ilgi gördü.
                 </p>
               </CardContent>
             </Card>
 
-            <Card className="border-border/50 bg-card/80 backdrop-blur-sm shadow-lg hover:shadow-xl transition-shadow duration-300 dark:bg-card dark:border-border">
+            <Card className="border-border/50 bg-card/50">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Video className="h-5 w-5 text-primary" />
-                  Nasıl Çalışır?
+                  Sistem Nasıl Çalışıyor?
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
-                  Gece saatlerinde yeni video paylaşıyorum ve takipçilerim web siteye gelip kendi kullanıcı adlarını
-                  aratıyor. Bu sayede kim hangi sırada olduğunu görebiliyorlar.
+                  Her gün 1-2 yeni video ile Instagram'da rekabeti başlatıyoruz. Videonun yayınlanmasının hemen ardından, sonuçları ve güncel sıralamaları bu web sitesine yüklüyoruz. Takipçilerimiz siteye gelerek kullanıcı adlarını aratabilir ve genel sıralamadaki yerlerini anında görebilirler. Bu şeffaf ve hızlı sistem, heyecanı her zaman taze tutuyor.
                 </p>
               </CardContent>
             </Card>
@@ -78,29 +90,24 @@ export default function AboutPage() {
 
           <Card className="border-border/50 bg-card/50 mb-8">
             <CardHeader>
-              <CardTitle className="text-center">Seri Hakkında</CardTitle>
+              <CardTitle className="text-center">Projenin Arkasındaki İsim</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
-              <p className="text-muted-foreground leading-relaxed mb-6">
-                Bu proje, sosyal medyada etkileşimi artırmak ve takipçilerle daha eğlenceli bir bağ kurmak için başladı.
-                Her video sonrası binlerce, hatta on binlerce kişi siteye gelip sıralamasını kontrol ediyor. Bu da hem
-                eğlenceli hem de heyecan verici bir deneyim yaratıyor.
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                Bu projenin kurucusu ve yöneticisi ben, Özgür. Bir sosyal medya meraklısı ve yazılım geliştirici olarak, iki tutkumu bir araya getirerek bu platformu hayata geçirdim. Amacım, hem teknik bilgimi kullanarak faydalı bir araç oluşturmak hem de Instagram topluluğuma benzersiz bir deneyim sunmaktı.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                Günde 1-2 video paylaşıyorum ve her videonun verilerini bu siteye yüklüyorum. Böylece takipçilerim her
-                zaman güncel sıralamalarını görebiliyor.
+                Her gün on binlerce kişinin siteyi ziyaret edip sıralamasını kontrol etmesi, bu projenin ne kadar sevildiğini gösteriyor ve beni daha da motive ediyor.
               </p>
             </CardContent>
           </Card>
 
           <div className="text-center">
             <Link
-              href="https://www.instagram.com/takipcileridovusturuyorum"
-              target="_blank"
+              href="/iletisim"
               className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors"
             >
-              <Instagram className="h-5 w-5" />
-              Instagram'da Takip Et
+              Bize Ulaşın
             </Link>
           </div>
         </div>

@@ -103,14 +103,14 @@ export default async function HomePage() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h3 className="text-2xl md:text-4xl font-bold text-foreground mb-4">Videolar ve Sıralamalar</h3>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              En güncel videolar ve takipçi sıralamaları burada! Rekabeti yakından takip edin.
+            <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
+              Instagram'daki en heyecanlı takipçi yarışmasına hoş geldiniz! Her gün yayınladığımız yeni videolarla takipçilerimiz arasındaki tatlı rekabeti körüklüyor ve sonuçları anında burada paylaşıyoruz. Kendi sıralamanızı görmek, en son videoları izlemek ve bu eğlenceli topluluğun bir parçası olmak için doğru yerdesiniz.
             </p>
             <div className="flex flex-col items-center mt-6 animate-bounce">
               <svg className="w-6 h-6 text-primary mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
               </svg>
-              <span className="text-sm text-muted-foreground font-medium">Aşağı kaydırın</span>
+              <span className="text-sm text-muted-foreground font-medium">Sonuçları Gör</span>
             </div>
           </div>
 
@@ -131,7 +131,7 @@ export default async function HomePage() {
                   const displayDate = formatDateForDisplay(video.video_date)
 
                   return (
-                    <Link key={video.id} href={`/video/${dateUrl}`} className="block" prefetch={index === 0}>
+                    <Link key={video.video_date} href={`/video/${dateUrl}`} className="block" prefetch={index === 0}>
                       <div className="flex gap-4 p-4 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors cursor-pointer relative">
                         {index === 0 && (
                           <div className="absolute -top-2 -right-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg z-10">
@@ -186,7 +186,7 @@ export default async function HomePage() {
                             </CardTitle>
                           </CardHeader>
               <CardContent className="space-y-3">
-                {latestRankings.slice(0, 5).map((user) => (
+                {latestRankings.slice(0, 5).map((user: { id: any; rank: number; profile_picture_url: string; username: string }) => (
                   <div
                     key={user.id}
                     className="flex items-center gap-4 p-3 rounded-lg bg-muted/50 hover:bg-muted/70 transition-colors"
